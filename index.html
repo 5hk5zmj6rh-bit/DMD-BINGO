@@ -146,6 +146,59 @@ h1 {
   width: 100%;
 }
 
+
+/* =====================================
+   BIG DRAW RESULT
+===================================== */
+
+.draw-area {
+  margin-top: 15px;
+}
+
+.result-box {
+  width: min(92vw, 340px);
+  min-height: 390px;
+  margin: 0 auto 18px;
+  padding: 14px;
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 7px 25px rgba(80,50,70,0.14);
+}
+
+.result-box img {
+  width: 100%;
+  height: min(72vw, 300px);
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.result-name {
+  margin-top: 10px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #352732;
+}
+
+.result-box.drawing {
+  animation: drawPulse 0.25s infinite alternate;
+}
+
+@keyframes drawPulse {
+  from {
+    transform: scale(0.99);
+  }
+
+  to {
+    transform: scale(1.01);
+  }
+}
+
+
+/* =====================================
+   BINGO CARD
+===================================== */
+
 .bingo-card {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -203,37 +256,25 @@ h1 {
   font-size: clamp(35px, 11vw, 65px);
 }
 
+.bingo-cell.can-open {
+  animation: cellPulse 0.8s infinite alternate;
+  border-color: #f28bb9;
+}
+
+@keyframes cellPulse {
+  from {
+    box-shadow: 0 0 0 rgba(242,139,185,0);
+  }
+
+  to {
+    box-shadow: 0 0 15px rgba(242,139,185,0.55);
+  }
+}
+
 
 /* =====================================
-   DRAW RESULT
+   RESULT MESSAGE
 ===================================== */
-
-.draw-area {
-  margin-top: 15px;
-}
-
-.result-box {
-  width: 220px;
-  min-height: 245px;
-  margin: 0 auto 15px;
-  padding: 10px;
-  border-radius: 18px;
-  background: white;
-  box-shadow: 0 5px 18px rgba(80,50,70,0.12);
-}
-
-.result-box img {
-  width: 190px;
-  height: 190px;
-  object-fit: cover;
-  border-radius: 13px;
-}
-
-.result-name {
-  margin-top: 7px;
-  font-size: 20px;
-  font-weight: bold;
-}
 
 .result-message {
   min-height: 30px;
@@ -244,10 +285,6 @@ h1 {
 
 .hit {
   color: #df649b;
-}
-
-.miss {
-  color: #8c7483;
 }
 
 .bingo-message {
@@ -271,6 +308,11 @@ h1 {
     opacity: 1;
   }
 }
+
+
+/* =====================================
+   BUTTONS
+===================================== */
 
 .draw-button {
   padding: 15px 40px;
@@ -323,6 +365,18 @@ h1 {
     gap: 4px;
   }
 
+  .result-box {
+    min-height: 350px;
+  }
+
+  .result-box img {
+    height: 285px;
+  }
+
+  .result-name {
+    font-size: 24px;
+  }
+
 }
 </style>
 </head>
@@ -368,12 +422,14 @@ h1 {
 
   <div id="gameScreen" class="hidden">
 
-    <div id="bingoCard" class="bingo-card"></div>
 
-
+    <!-- 大きな抽選結果 -->
     <div class="draw-area">
 
-      <div class="result-box">
+      <div
+        id="resultBox"
+        class="result-box hidden"
+      >
 
         <img
           id="resultImage"
@@ -384,12 +440,18 @@ h1 {
         <div
           id="resultName"
           class="result-name"
-        >
-          メンバーを引いてね♡
-        </div>
+        ></div>
 
       </div>
 
+    </div>
+
+
+    <!-- 16マス -->
+    <div id="bingoCard" class="bingo-card"></div>
+
+
+    <div class="draw-area">
 
       <div
         id="resultMessage"
@@ -427,63 +489,57 @@ h1 {
 /* =====================================================
    DMD MEMBERS
 
-   ここを実際の47人の名前・画像ファイル名に合わせる
-
-   image はGitHubに入れた画像ファイル名
+   GitHubにある実際のファイル名をそのまま使用
 ===================================================== */
 
 const members = [
 
-  { name: "Max", image: "Max.jpg" },
-  { name: "Nat", image: "Nat.jpg" },
-  { name: "James", image: "James.jpg" },
-  { name: "Tle", image: "Tle.jpg" },
-  { name: "Tutor", image: "Tutor.jpg" },
-  { name: "Yim", image: "Yim.jpg" },
-  { name: "Zee", image: "Zee.jpg" },
-  { name: "NuNew", image: "NuNew.jpg" },
-
-  { name: "Keng", image: "けん.jpg" },
-  { name: "Kim", image: "きむ.jpg" },
-  { name: "Ohm", image: "おむ.jpg" },
-  { name: "Otto", image: "おっとー.jpg" },
-
-  { name: "Auau", image: "うう.jpg" },
-  { name: "Wave", image: "うぇーぶ.jpg" },
+  { name: "Auau", image: "Auau.jpg" },
+  { name: "Copper", image: "Copper .jpg" },
+  { name: "FIFA", image: "FIFA.jpg" },
   { name: "Few", image: "Few.jpg" },
-  { name: "Reeonn", image: "Reeonn.jpg" },
-  { name: "Thee", image: "Thee.jpg" },
-  { name: "Save", image: "Save.jpg" },
-  { name: "Ryu", image: "Ryu.jpg" },
-
-  { name: "Member 20", image: "member20.jpg" },
-  { name: "Member 21", image: "member21.jpg" },
-  { name: "Member 22", image: "member22.jpg" },
-  { name: "Member 23", image: "member23.jpg" },
-  { name: "Member 24", image: "member24.jpg" },
-  { name: "Member 25", image: "member25.jpg" },
-  { name: "Member 26", image: "member26.jpg" },
-  { name: "Member 27", image: "member27.jpg" },
-  { name: "Member 28", image: "member28.jpg" },
-  { name: "Member 29", image: "member29.jpg" },
-  { name: "Member 30", image: "member30.jpg" },
-  { name: "Member 31", image: "member31.jpg" },
-  { name: "Member 32", image: "member32.jpg" },
-  { name: "Member 33", image: "member33.jpg" },
-  { name: "Member 34", image: "member34.jpg" },
-  { name: "Member 35", image: "member35.jpg" },
-  { name: "Member 36", image: "member36.jpg" },
-  { name: "Member 37", image: "member37.jpg" },
-  { name: "Member 38", image: "member38.jpg" },
-  { name: "Member 39", image: "member39.jpg" },
-  { name: "Member 40", image: "member40.jpg" },
-  { name: "Member 41", image: "member41.jpg" },
-  { name: "Member 42", image: "member42.jpg" },
-  { name: "Member 43", image: "member43.jpg" },
-  { name: "Member 44", image: "member44.jpg" },
-  { name: "Member 45", image: "member45.jpg" },
-  { name: "Member 46", image: "member46.jpg" },
-  { name: "Member 47", image: "member47.jpg" }
+  { name: "Firstone", image: "Firstone .jpg" },
+  { name: "Gems", image: "Gems .jpg" },
+  { name: "JJ", image: "JJ.jpg" },
+  { name: "JT", image: "JT.jpg" },
+  { name: "James", image: "James.jpg" },
+  { name: "Jimmy", image: "Jimmy .jpg" },
+  { name: "Keng", image: "Keng.jpg" },
+  { name: "Kim", image: "Kim.jpg" },
+  { name: "Kong", image: "Kong.jpg" },
+  { name: "Latte", image: "Latte .jpg" },
+  { name: "Mark", image: "Mark .jpg" },
+  { name: "Max", image: "Max .jpg" },
+  { name: "Namping", image: "Namping .jpg" },
+  { name: "Nan", image: "Nan.jpg" },
+  { name: "Nat", image: "Nat.jpg" },
+  { name: "Net", image: "Net .jpg" },
+  { name: "Nick", image: "Nick .jpg" },
+  { name: "North", image: "North .jpg" },
+  { name: "Nunew", image: "Nunew .jpg" },
+  { name: "Ohm", image: "Ohm .jpg" },
+  { name: "Otto", image: "Otto .jpg" },
+  { name: "Park", image: "Park .jpg" },
+  { name: "Patji", image: "Patji .jpg" },
+  { name: "Pete", image: "Pete .jpg" },
+  { name: "Phupha", image: "Phupha .jpg" },
+  { name: "Poppy", image: "Poppy .jpg" },
+  { name: "Por", image: "Por .jpg" },
+  { name: "Porshe", image: "Porshe .jpg" },
+  { name: "Pung", image: "Pung .jpg" },
+  { name: "Reeonn", image: "Reeonn .jpg" },
+  { name: "Ryujin", image: "Ryujin.jpg" },
+  { name: "Save", image: "Save .jpg" },
+  { name: "Teddy", image: "Teddy .jpg" },
+  { name: "Teeter", image: "Teeter.jpg" },
+  { name: "Thomas", image: "Thomas .jpg" },
+  { name: "Tle", image: "Tle .jpg" },
+  { name: "Tommy", image: "Tommy .jpg" },
+  { name: "Ton", image: "Ton.jpg" },
+  { name: "Tutor", image: "Tutor .jpg" },
+  { name: "Wave", image: "Wave .jpg" },
+  { name: "Yim", image: "Yim.jpg" },
+  { name: "Zee", image: "Zee.jpg" }
 
 ];
 
@@ -525,6 +581,9 @@ const drawButton =
 
 const resetButton =
   document.getElementById("resetButton");
+
+const resultBox =
+  document.getElementById("resultBox");
 
 const resultImage =
   document.getElementById("resultImage");
@@ -611,8 +670,6 @@ function createMemberList() {
           );
 
 
-        /* 選択解除 */
-
         if (alreadySelected) {
 
           selectedMembers =
@@ -626,8 +683,6 @@ function createMemberList() {
           );
 
         }
-
-        /* 新しく選択 */
 
         else {
 
@@ -743,6 +798,13 @@ function startGame() {
   drawnMembers = [];
 
 
+  resultBox.classList.add(
+    "hidden"
+  );
+
+  resultMessage.textContent = "";
+
+
   createBingoCard();
 
 }
@@ -783,8 +845,8 @@ function createBingoCard() {
 
 
     /*
-      抽選で出たあと、
-      自分でタップして開く
+      抽選で出た人だけ
+      自分のマスをタップできる
     */
 
     cell.addEventListener(
@@ -798,6 +860,10 @@ function createBingoCard() {
         }
 
 
+        cell.classList.remove(
+          "can-open"
+        );
+
         cell.classList.add(
           "opened"
         );
@@ -805,6 +871,20 @@ function createBingoCard() {
 
         cell.dataset.canOpen =
           "false";
+
+
+        /*
+          マスを開けたら
+          大きな写真を消す
+        */
+
+        resultBox.classList.add(
+          "hidden"
+        );
+
+
+        resultMessage.textContent =
+          "";
 
 
         checkBingo();
@@ -837,8 +917,15 @@ function drawMember() {
   }
 
 
+  /*
+    まだ引いていない
+    「選んだ16人」だけを抽選対象にする
+
+    → ハズレなし！
+  */
+
   const remaining =
-    members.filter(member =>
+    cardMembers.filter(member =>
       !drawnMembers.some(
         drawn =>
           drawn.name === member.name
@@ -846,10 +933,14 @@ function drawMember() {
     );
 
 
+  /*
+    16人すべて引いたら終了
+  */
+
   if (remaining.length === 0) {
 
-    resultName.textContent =
-      "全員引きました！";
+    resultMessage.innerHTML =
+      "🎉 16人全員引いたよ！ 🎉";
 
     drawButton.disabled = true;
 
@@ -860,8 +951,20 @@ function drawMember() {
 
   drawButton.disabled = true;
 
-
   resultMessage.textContent = "";
+
+
+  /*
+    大きな写真を表示
+  */
+
+  resultBox.classList.remove(
+    "hidden"
+  );
+
+  resultBox.classList.add(
+    "drawing"
+  );
 
 
   /*
@@ -870,17 +973,22 @@ function drawMember() {
 
   let count = 0;
 
-  const maxCount = 22;
+  const maxCount = 30;
 
 
   drawTimer =
     setInterval(() => {
 
+      /*
+        選択した16人の中だけで
+        高速ランダム表示
+      */
+
       const randomMember =
-        members[
+        cardMembers[
           Math.floor(
             Math.random() *
-            members.length
+            cardMembers.length
           )
         ];
 
@@ -904,13 +1012,18 @@ function drawMember() {
         drawTimer = null;
 
 
+        resultBox.classList.remove(
+          "drawing"
+        );
+
+
         finishDraw(
           remaining
         );
 
       }
 
-    }, 70);
+    }, 65);
 
 }
 
@@ -922,6 +1035,11 @@ function drawMember() {
 function finishDraw(
   remaining
 ) {
+
+  /*
+    まだ出ていない16人の中から
+    必ず1人選ぶ
+  */
 
   const randomIndex =
     Math.floor(
@@ -944,6 +1062,10 @@ function finishDraw(
     selected.name;
 
 
+  /*
+    その人の16マスを探す
+  */
+
   const cardCell =
     [...document.querySelectorAll(
       ".bingo-cell"
@@ -956,14 +1078,12 @@ function finishDraw(
 
   if (cardCell) {
 
-    /*
-      カードにいる！
-      → 自分でタップできるようにする
-    */
-
     cardCell.dataset.canOpen =
       "true";
 
+    cardCell.classList.add(
+      "can-open"
+    );
 
     resultMessage.textContent =
       "🩷 この人が出た！マスをタップして開けてね！";
@@ -973,20 +1093,15 @@ function finishDraw(
 
   }
 
-  else {
 
-    resultMessage.textContent =
-      "💔 ハズレ！";
-
-    resultMessage.className =
-      "result-message miss";
-
-  }
-
+  /*
+    16人全部引き終わったら
+    ボタンを止める
+  */
 
   if (
     drawnMembers.length >=
-    members.length
+    cardMembers.length
   ) {
 
     drawButton.disabled =
@@ -1119,13 +1234,24 @@ function resetGame() {
   );
 
 
+  resultBox.classList.add(
+    "hidden"
+  );
+
   resultImage.src = "";
 
   resultName.textContent =
-    "メンバーを引いてね♡";
+    "";
 
   resultMessage.textContent =
     "";
+
+  resultMessage.className =
+    "result-message";
+
+
+  drawButton.disabled =
+    false;
 
 
   createMemberList();
