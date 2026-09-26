@@ -256,21 +256,6 @@ h1 {
   font-size: clamp(35px, 11vw, 65px);
 }
 
-.bingo-cell.can-open {
-  animation: cellPulse 0.8s infinite alternate;
-  border-color: #f28bb9;
-}
-
-@keyframes cellPulse {
-  from {
-    box-shadow: 0 0 0 rgba(242,139,185,0);
-  }
-
-  to {
-    box-shadow: 0 0 15px rgba(242,139,185,0.55);
-  }
-}
-
 
 /* =====================================
    RESULT MESSAGE
@@ -422,8 +407,6 @@ h1 {
 
   <div id="gameScreen" class="hidden">
 
-
-    <!-- 大きな抽選結果 -->
     <div class="draw-area">
 
       <div
@@ -447,7 +430,6 @@ h1 {
     </div>
 
 
-    <!-- 16マス -->
     <div id="bingoCard" class="bingo-card"></div>
 
 
@@ -488,8 +470,6 @@ h1 {
 
 /* =====================================================
    DMD MEMBERS
-
-   GitHubにある実際のファイル名をそのまま使用
 ===================================================== */
 
 const members = [
@@ -844,14 +824,14 @@ function createBingoCard() {
     `;
 
 
-    /*
-      抽選で出た人だけ
-      自分のマスをタップできる
-    */
-
     cell.addEventListener(
       "click",
       () => {
+
+        /*
+          抽選で出た人だけ
+          マスを開けられる
+        */
 
         if (
           cell.dataset.canOpen !== "true"
@@ -859,10 +839,6 @@ function createBingoCard() {
           return;
         }
 
-
-        cell.classList.remove(
-          "can-open"
-        );
 
         cell.classList.add(
           "opened"
@@ -918,14 +894,17 @@ function drawMember() {
 
 
   /*
-    まだ引いていない
-    「選んだ16人」だけを抽選対象にする
+    ★ここが変更ポイント★
 
-    → ハズレなし！
+    抽選対象は16マスではなく
+    DMDメンバー全員。
+
+    ただし、一度出た人は
+    もう一度出ない。
   */
 
   const remaining =
-    cardMembers.filter(member =>
+    members.filter(member =>
       !drawnMembers.some(
         drawn =>
           drawn.name === member.name
@@ -933,14 +912,10 @@ function drawMember() {
     );
 
 
-  /*
-    16人すべて引いたら終了
-  */
-
   if (remaining.length === 0) {
 
     resultMessage.innerHTML =
-      "🎉 16人全員引いたよ！ 🎉";
+      "🎉 全員引いたよ！ 🎉";
 
     drawButton.disabled = true;
 
@@ -954,10 +929,6 @@ function drawMember() {
   resultMessage.textContent = "";
 
 
-  /*
-    大きな写真を表示
-  */
-
   resultBox.classList.remove(
     "hidden"
   );
@@ -969,6 +940,9 @@ function drawMember() {
 
   /*
     高速ルーレット
+
+    全DMDメンバーから
+    高速で写真が切り替わる
   */
 
   let count = 0;
@@ -979,16 +953,11 @@ function drawMember() {
   drawTimer =
     setInterval(() => {
 
-      /*
-        選択した16人の中だけで
-        高速ランダム表示
-      */
-
       const randomMember =
-        cardMembers[
+        members[
           Math.floor(
             Math.random() *
-            cardMembers.length
+            members.length
           )
         ];
 
@@ -1037,8 +1006,11 @@ function finishDraw(
 ) {
 
   /*
-    まだ出ていない16人の中から
-    必ず1人選ぶ
+    全メンバーの中から
+    まだ出ていない人を選ぶ
+
+    → 16マス外のメンバーも普通に出る
+    → ハズレという概念はない
   */
 
   const randomIndex =
@@ -1063,7 +1035,12 @@ function finishDraw(
 
 
   /*
-    その人の16マスを探す
+    もし今回出た人が
+    16マスの中にいるなら
+    そのマスだけ開けられるようにする。
+
+    ただし、
+    ★色で囲む演出はしない★
   */
 
   const cardCell =
@@ -1081,27 +1058,37 @@ function finishDraw(
     cardCell.dataset.canOpen =
       "true";
 
-    cardCell.classList.add(
-      "can-open"
-    );
-
     resultMessage.textContent =
       "🩷 この人が出た！マスをタップして開けてね！";
 
     resultMessage.className =
       "result-message hit";
 
+  } else {
+
+    /*
+      16マスにいない人でも
+      ハズレにはしない。
+
+      ただ写真と名前を表示するだけ。
+    */
+
+    resultMessage.textContent =
+      "";
+
+    resultMessage.className =
+      "result-message";
+
   }
 
 
   /*
-    16人全部引き終わったら
-    ボタンを止める
+    全員引き終わったら終了
   */
 
   if (
     drawnMembers.length >=
-    cardMembers.length
+    members.length
   ) {
 
     drawButton.disabled =
