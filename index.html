@@ -14,8 +14,8 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fff7fb, #f9f0ff);
-  color: #342936;
+  background: #fff8fc;
+  color: #352732;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -25,271 +25,393 @@ body {
     sans-serif;
 }
 
-.container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 25px 15px 40px;
-  text-align: center;
-}
-
-h1 {
-  margin: 5px 0 5px;
-  font-size: 34px;
-  letter-spacing: 2px;
-}
-
-.subtitle {
-  margin: 0 0 25px;
-  font-size: 14px;
-  color: #8b7485;
-}
-
 button {
+  font-family: inherit;
   border: none;
   cursor: pointer;
-  font-family: inherit;
-}
-
-.start-button {
-  padding: 15px 40px;
-  border-radius: 30px;
-  background: #e99ac5;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(180, 100, 145, 0.25);
-}
-
-.start-button:active {
-  transform: scale(0.96);
 }
 
 .hidden {
   display: none !important;
 }
 
-/* =========================
-   BINGO CARD
-========================= */
-
-.bingo-card {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
+.container {
   width: 100%;
-  max-width: 520px;
-  margin: 20px auto;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 24px 14px 50px;
+  text-align: center;
 }
 
-.cell {
+h1 {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  margin: 6px 0 22px;
+  color: #927888;
+  font-size: 14px;
+}
+
+
+/* =====================================
+   MEMBER SELECT
+===================================== */
+
+#selectScreen {
+  width: 100%;
+}
+
+.select-count {
+  margin: 10px 0 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d66c9d;
+}
+
+.member-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.member-choice {
   position: relative;
-  aspect-ratio: 1 / 1;
   overflow: hidden;
+  border: 2px solid #efd9e5;
   border-radius: 10px;
   background: white;
-  border: 2px solid #efd5e4;
-  box-shadow: 0 2px 7px rgba(100, 60, 90, 0.08);
+  aspect-ratio: 1 / 1;
+  padding: 0;
 }
 
-.cell img {
+.member-choice img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.cell-name {
+.member-choice-name {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 4px 2px;
-  background: rgba(255,255,255,0.88);
-  font-size: 11px;
+  background: rgba(255,255,255,0.9);
+  font-size: 10px;
   font-weight: bold;
 }
 
-.cell.free {
-  background: #f7c8df;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.member-choice.selected {
+  border: 4px solid #f28bb9;
+}
+
+.member-choice.selected::after {
+  content: "🩷";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  font-size: 25px;
+}
+
+.member-choice.disabled {
+  opacity: 0.4;
+}
+
+.start-button {
+  padding: 15px 42px;
+  border-radius: 30px;
+  background: #e697bd;
   color: white;
   font-size: 18px;
   font-weight: bold;
+  box-shadow: 0 5px 14px rgba(190,100,145,0.25);
 }
 
-.cell.hit::after {
-  content: "♥";
+.start-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+
+/* =====================================
+   GAME
+===================================== */
+
+#gameScreen {
+  width: 100%;
+}
+
+.bingo-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 20px;
+}
+
+.bingo-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 10px;
+  background: white;
+  border: 2px solid #efd9e5;
+  box-shadow: 0 2px 7px rgba(80,50,70,0.08);
+  cursor: pointer;
+}
+
+.bingo-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bingo-cell-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 2px;
+  background: rgba(255,255,255,0.9);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.bingo-cell.opened {
+  background: #ffd7e9;
+}
+
+.bingo-cell.opened img,
+.bingo-cell.opened .bingo-cell-name {
+  opacity: 0;
+}
+
+.bingo-cell.opened::after {
+  content: "🩷";
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 42px;
-  color: #f06caa;
-  background: rgba(255,255,255,0.48);
-  text-shadow: 0 2px 5px rgba(120,50,90,0.25);
+  font-size: clamp(35px, 11vw, 65px);
 }
 
-/* =========================
-   DRAW AREA
-========================= */
+
+/* =====================================
+   DRAW RESULT
+===================================== */
 
 .draw-area {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
-.draw-title {
-  font-size: 14px;
-  color: #8b7485;
-  margin-bottom: 8px;
-}
-
-.current-member {
-  min-height: 250px;
-  max-width: 300px;
-  margin: 0 auto 18px;
-  padding: 12px;
+.result-box {
+  width: 220px;
+  min-height: 245px;
+  margin: 0 auto 15px;
+  padding: 10px;
   border-radius: 18px;
   background: white;
-  box-shadow: 0 5px 18px rgba(100, 60, 90, 0.12);
+  box-shadow: 0 5px 18px rgba(80,50,70,0.12);
 }
 
-.current-member img {
-  width: 180px;
-  height: 180px;
+.result-box img {
+  width: 190px;
+  height: 190px;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 13px;
 }
 
-.current-name {
-  margin-top: 8px;
+.result-name {
+  margin-top: 7px;
   font-size: 20px;
   font-weight: bold;
 }
 
-.draw-button {
-  padding: 14px 35px;
-  border-radius: 30px;
-  background: #9d79d5;
-  color: white;
-  font-size: 17px;
-  font-weight: bold;
-  box-shadow: 0 5px 15px rgba(100,70,150,0.2);
-}
-
-.draw-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.reset-button {
-  margin-top: 12px;
-  padding: 10px 22px;
-  border-radius: 20px;
-  background: #eee5ed;
-  color: #6e5d6b;
-}
-
-/* =========================
-   BINGO MESSAGE
-========================= */
-
-.message {
-  min-height: 35px;
-  margin: 15px 0;
+.result-message {
+  min-height: 30px;
+  margin: 10px 0;
   font-size: 18px;
   font-weight: bold;
 }
 
-.bingo {
-  color: #e45d9c;
-  font-size: 30px;
-  animation: pop 0.5s ease;
+.hit {
+  color: #df649b;
 }
 
-@keyframes pop {
+.miss {
+  color: #8c7483;
+}
+
+.bingo-message {
+  color: #e05294;
+  font-size: 30px;
+  animation: bingoPop 0.5s ease;
+}
+
+@keyframes bingoPop {
   0% {
     transform: scale(0.5);
     opacity: 0;
   }
+
   70% {
     transform: scale(1.15);
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
   }
 }
 
-/* =========================
-   MOBILE
-========================= */
+.draw-button {
+  padding: 15px 40px;
+  border-radius: 30px;
+  background: #9d7bd1;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(100,70,150,0.2);
+}
 
-@media (max-width: 400px) {
+.draw-button:active {
+  transform: scale(0.96);
+}
+
+.draw-button:disabled {
+  opacity: 0.5;
+}
+
+.reset-button {
+  margin-top: 12px;
+  padding: 9px 20px;
+  border-radius: 20px;
+  background: #eee5eb;
+  color: #756370;
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 420px) {
+
   .container {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+
+  .member-list {
+    gap: 5px;
+  }
+
+  .member-choice-name,
+  .bingo-cell-name {
+    font-size: 8px;
   }
 
   .bingo-card {
     gap: 4px;
   }
 
-  .cell {
-    border-radius: 7px;
-  }
-
-  .cell-name {
-    font-size: 9px;
-  }
-
-  .cell.hit::after {
-    font-size: 32px;
-  }
 }
 </style>
 </head>
+
 
 <body>
 
 <div class="container">
 
   <h1>♡ DMD BINGO ♡</h1>
-  <p class="subtitle">DMDメンバーでビンゴしよう！</p>
 
-  <button id="startButton" class="start-button">
-    BINGO START
-  </button>
+  <p class="subtitle">
+    好きな16人を選んでBINGOしよう！
+  </p>
 
-  <div id="game" class="hidden">
+
+  <!-- =====================================
+       MEMBER SELECT SCREEN
+  ====================================== -->
+
+  <div id="selectScreen">
+
+    <div class="select-count">
+      選択中：<span id="selectedCount">0</span> / 16
+    </div>
+
+    <div id="memberList" class="member-list"></div>
+
+    <button
+      id="startButton"
+      class="start-button"
+      disabled
+    >
+      BINGO START
+    </button>
+
+  </div>
+
+
+  <!-- =====================================
+       GAME SCREEN
+  ====================================== -->
+
+  <div id="gameScreen" class="hidden">
 
     <div id="bingoCard" class="bingo-card"></div>
 
-    <div class="message" id="message"></div>
 
     <div class="draw-area">
 
-      <div class="draw-title">
-        RANDOM MEMBER
-      </div>
+      <div class="result-box">
 
-      <div class="current-member">
-        <img id="currentImage" src="" alt="">
-        <div id="currentName" class="current-name">
+        <img
+          id="resultImage"
+          src=""
+          alt=""
+        >
+
+        <div
+          id="resultName"
+          class="result-name"
+        >
           メンバーを引いてね♡
         </div>
+
       </div>
 
-      <button id="drawButton" class="draw-button">
+
+      <div
+        id="resultMessage"
+        class="result-message"
+      ></div>
+
+
+      <button
+        id="drawButton"
+        class="draw-button"
+      >
         メンバーを引く！
       </button>
 
+
       <br>
 
-      <button id="resetButton" class="reset-button">
+
+      <button
+        id="resetButton"
+        class="reset-button"
+      >
         最初からやり直す
       </button>
 
@@ -299,384 +421,285 @@ button {
 
 </div>
 
+
 <script>
 
-/* =========================================================
+/* =====================================================
    DMD MEMBERS
 
-   ↓↓↓ ここにメンバーを追加・変更していく ↓↓↓
+   ここを実際の47人の名前・画像ファイル名に合わせる
 
-   image は GitHub に入れる写真のファイル名。
-
-   例：
-   image: "max.jpg"
-
-   写真を index.html と同じ場所に置く場合は
-   "max.jpg"
-
-   images フォルダに入れる場合は
-   "images/max.jpg"
-========================================================= */
+   image はGitHubに入れた画像ファイル名
+===================================================== */
 
 const members = [
 
-  {
-    name: "Max",
-    image: "Max.jpg"
-  },
+  { name: "Max", image: "Max.jpg" },
+  { name: "Nat", image: "Nat.jpg" },
+  { name: "James", image: "James.jpg" },
+  { name: "Tle", image: "Tle.jpg" },
+  { name: "Tutor", image: "Tutor.jpg" },
+  { name: "Yim", image: "Yim.jpg" },
+  { name: "Zee", image: "Zee.jpg" },
+  { name: "NuNew", image: "NuNew.jpg" },
 
-  {
-    name: "Nat",
-    image: "Nat.jpg"
-  },
+  { name: "Keng", image: "けん.jpg" },
+  { name: "Kim", image: "きむ.jpg" },
+  { name: "Ohm", image: "おむ.jpg" },
+  { name: "Otto", image: "おっとー.jpg" },
 
-  {
-    name: "James",
-    image: "James.jpg"
-  },
+  { name: "Auau", image: "うう.jpg" },
+  { name: "Wave", image: "うぇーぶ.jpg" },
+  { name: "Few", image: "Few.jpg" },
+  { name: "Reeonn", image: "Reeonn.jpg" },
+  { name: "Thee", image: "Thee.jpg" },
+  { name: "Save", image: "Save.jpg" },
+  { name: "Ryu", image: "Ryu.jpg" },
 
-  {
-    name: "Tle",
-    image: "Tle.jpg"
-  },
-
-  {
-    name: "Tutor",
-    image: "Tutor.jpg"
-  },
-
-  {
-    name: "Yim",
-    image: "Yim.jpg"
-  },
-
-  {
-    name: "Zee",
-    image: "Zee.jpg"
-  },
-
-  {
-    name: "NuNew",
-    image: "NuNew.jpg"
-  },
-
-  {
-    name: "Keng",
-    image: "けん.jpg"
-  },
-
-  {
-    name: "Kim",
-    image: "きむ.jpg"
-  },
-
-  {
-    name: "Ohm",
-    image: "おむ.jpg"
-  },
-
-  {
-    name: "Otto",
-    image: "おっとー.jpg"
-  },
-
-  {
-    name: "Auau",
-    image: "うう.jpg"
-  },
-
-  {
-    name: "Yim",
-    image: "いむ.jpg"
-  },
-
-  {
-    name: "Wave",
-    image: "うぇーぶ.jpg"
-  },
-
-  {
-    name: "Few",
-    image: "Few.jpg"
-  },
-
-  {
-    name: "Reeonn",
-    image: "Reeonn.jpg"
-  },
-
-  {
-    name: "Thee",
-    image: "Thee.jpg"
-  },
-
-  {
-    name: "Save",
-    image: "Save.jpg"
-  },
-
-  {
-    name: "Ryu",
-    image: "Ryu.jpg"
-  },
-
-  {
-    name: "Member 21",
-    image: "member21.jpg"
-  },
-
-  {
-    name: "Member 22",
-    image: "member22.jpg"
-  },
-
-  {
-    name: "Member 23",
-    image: "member23.jpg"
-  },
-
-  {
-    name: "Member 24",
-    image: "member24.jpg"
-  },
-
-  {
-    name: "Member 25",
-    image: "member25.jpg"
-  },
-
-  {
-    name: "Member 26",
-    image: "member26.jpg"
-  },
-
-  {
-    name: "Member 27",
-    image: "member27.jpg"
-  },
-
-  {
-    name: "Member 28",
-    image: "member28.jpg"
-  },
-
-  {
-    name: "Member 29",
-    image: "member29.jpg"
-  },
-
-  {
-    name: "Member 30",
-    image: "member30.jpg"
-  }
+  { name: "Member 20", image: "member20.jpg" },
+  { name: "Member 21", image: "member21.jpg" },
+  { name: "Member 22", image: "member22.jpg" },
+  { name: "Member 23", image: "member23.jpg" },
+  { name: "Member 24", image: "member24.jpg" },
+  { name: "Member 25", image: "member25.jpg" },
+  { name: "Member 26", image: "member26.jpg" },
+  { name: "Member 27", image: "member27.jpg" },
+  { name: "Member 28", image: "member28.jpg" },
+  { name: "Member 29", image: "member29.jpg" },
+  { name: "Member 30", image: "member30.jpg" },
+  { name: "Member 31", image: "member31.jpg" },
+  { name: "Member 32", image: "member32.jpg" },
+  { name: "Member 33", image: "member33.jpg" },
+  { name: "Member 34", image: "member34.jpg" },
+  { name: "Member 35", image: "member35.jpg" },
+  { name: "Member 36", image: "member36.jpg" },
+  { name: "Member 37", image: "member37.jpg" },
+  { name: "Member 38", image: "member38.jpg" },
+  { name: "Member 39", image: "member39.jpg" },
+  { name: "Member 40", image: "member40.jpg" },
+  { name: "Member 41", image: "member41.jpg" },
+  { name: "Member 42", image: "member42.jpg" },
+  { name: "Member 43", image: "member43.jpg" },
+  { name: "Member 44", image: "member44.jpg" },
+  { name: "Member 45", image: "member45.jpg" },
+  { name: "Member 46", image: "member46.jpg" },
+  { name: "Member 47", image: "member47.jpg" }
 
 ];
 
 
-/* =========================================================
-   GAME SETTINGS
-========================================================= */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
-const CARD_SIZE = 25;
-const FREE_INDEX = 12;
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const startButton = document.getElementById("startButton");
-const game = document.getElementById("game");
-const bingoCard = document.getElementById("bingoCard");
-const drawButton = document.getElementById("drawButton");
-const resetButton = document.getElementById("resetButton");
-
-const currentImage = document.getElementById("currentImage");
-const currentName = document.getElementById("currentName");
-const message = document.getElementById("message");
-
-
-/* =========================================================
-   GAME VARIABLES
-========================================================= */
-
+let selectedMembers = [];
 let cardMembers = [];
 let drawnMembers = [];
-let started = false;
+let drawTimer = null;
 
 
-/* =========================================================
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const memberList =
+  document.getElementById("memberList");
+
+const selectedCount =
+  document.getElementById("selectedCount");
+
+const startButton =
+  document.getElementById("startButton");
+
+const selectScreen =
+  document.getElementById("selectScreen");
+
+const gameScreen =
+  document.getElementById("gameScreen");
+
+const bingoCard =
+  document.getElementById("bingoCard");
+
+const drawButton =
+  document.getElementById("drawButton");
+
+const resetButton =
+  document.getElementById("resetButton");
+
+const resultImage =
+  document.getElementById("resultImage");
+
+const resultName =
+  document.getElementById("resultName");
+
+const resultMessage =
+  document.getElementById("resultMessage");
+
+
+/* =====================================================
    SHUFFLE
-========================================================= */
+===================================================== */
 
 function shuffle(array) {
 
   const result = [...array];
 
-  for (let i = result.length - 1; i > 0; i--) {
+  for (
+    let i = result.length - 1;
+    i > 0;
+    i--
+  ) {
 
-    const j = Math.floor(Math.random() * (i + 1));
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
 
-    [result[i], result[j]] =
-      [result[j], result[i]];
+    [
+      result[i],
+      result[j]
+    ] =
+    [
+      result[j],
+      result[i]
+    ];
 
   }
 
   return result;
+
 }
 
 
-/* =========================================================
-   START GAME
-========================================================= */
+/* =====================================================
+   MEMBER SELECTION
+===================================================== */
 
-startButton.addEventListener("click", startGame);
+function createMemberList() {
 
-function startGame() {
+  memberList.innerHTML = "";
 
-  if (members.length < 24) {
+  members.forEach(member => {
 
-    alert(
-      "メンバーが24人未満です！\n" +
-      "members のところにメンバーを追加してね♡"
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "member-choice";
+
+    button.innerHTML = `
+      <img
+        src="${member.image}"
+        alt="${member.name}"
+        onerror="this.style.display='none';"
+      >
+
+      <div class="member-choice-name">
+        ${member.name}
+      </div>
+    `;
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const alreadySelected =
+          selectedMembers.some(
+            selected =>
+              selected.name === member.name
+          );
+
+
+        /* 選択解除 */
+
+        if (alreadySelected) {
+
+          selectedMembers =
+            selectedMembers.filter(
+              selected =>
+                selected.name !== member.name
+            );
+
+          button.classList.remove(
+            "selected"
+          );
+
+        }
+
+        /* 新しく選択 */
+
+        else {
+
+          if (
+            selectedMembers.length >= 16
+          ) {
+            return;
+          }
+
+          selectedMembers.push(member);
+
+          button.classList.add(
+            "selected"
+          );
+
+        }
+
+
+        updateSelection();
+
+      }
     );
 
-    return;
-  }
 
-  started = true;
+    memberList.appendChild(button);
 
-  startButton.classList.add("hidden");
-  game.classList.remove("hidden");
-
-  createCard();
+  });
 
 }
 
 
-/* =========================================================
-   CREATE BINGO CARD
-========================================================= */
+/* =====================================================
+   UPDATE SELECTION
+===================================================== */
 
-function createCard() {
+function updateSelection() {
 
-  bingoCard.innerHTML = "";
+  selectedCount.textContent =
+    selectedMembers.length;
 
-  drawnMembers = [];
 
-  /*
-   24人をランダムに選んで
-   真ん中をFREEにする
-  */
+  startButton.disabled =
+    selectedMembers.length !== 16;
 
-  const shuffled = shuffle(members);
 
-  cardMembers = shuffled.slice(0, 24);
+  const buttons =
+    document.querySelectorAll(
+      ".member-choice"
+    );
 
-  let memberIndex = 0;
 
-  for (let i = 0; i < CARD_SIZE; i++) {
+  buttons.forEach(button => {
 
-    const cell = document.createElement("div");
+    const isSelected =
+      button.classList.contains(
+        "selected"
+      );
 
-    cell.className = "cell";
+    if (
+      selectedMembers.length >= 16 &&
+      !isSelected
+    ) {
 
-    if (i === FREE_INDEX) {
-
-      cell.classList.add("free");
-
-      cell.innerHTML = "FREE ♡";
+      button.classList.add(
+        "disabled"
+      );
 
     } else {
 
-      const member = cardMembers[memberIndex];
-
-      cell.dataset.name = member.name;
-
-      cell.innerHTML = `
-        <img
-          src="${member.image}"
-          alt="${member.name}"
-          onerror="this.style.display='none';"
-        >
-        <div class="cell-name">
-          ${member.name}
-        </div>
-      `;
-
-      memberIndex++;
-
-    }
-
-    bingoCard.appendChild(cell);
-
-  }
-
-}
-
-
-/* =========================================================
-   DRAW MEMBER
-========================================================= */
-
-drawButton.addEventListener("click", drawMember);
-
-function drawMember() {
-
-  if (!started) return;
-
-  const remaining = members.filter(
-    member =>
-      !drawnMembers.some(
-        drawn => drawn.name === member.name
-      )
-  );
-
-  if (remaining.length === 0) {
-
-    drawButton.disabled = true;
-
-    currentName.textContent =
-      "全員出ました！";
-
-    return;
-  }
-
-  const randomIndex =
-    Math.floor(Math.random() * remaining.length);
-
-  const selected =
-    remaining[randomIndex];
-
-  drawnMembers.push(selected);
-
-  currentImage.src = selected.image;
-  currentImage.alt = selected.name;
-
-  currentName.textContent =
-    selected.name;
-
-  markMember(selected.name);
-
-  checkBingo();
-
-}
-
-
-/* =========================================================
-   MARK MEMBER
-========================================================= */
-
-function markMember(name) {
-
-  const cells =
-    document.querySelectorAll(".cell");
-
-  cells.forEach(cell => {
-
-    if (cell.dataset.name === name) {
-
-      cell.classList.add("hit");
+      button.classList.remove(
+        "disabled"
+      );
 
     }
 
@@ -685,92 +708,440 @@ function markMember(name) {
 }
 
 
-/* =========================================================
-   CHECK BINGO
-========================================================= */
+/* =====================================================
+   START BINGO
+===================================================== */
 
-function checkBingo() {
+startButton.addEventListener(
+  "click",
+  startGame
+);
 
-  const cells =
-    [...document.querySelectorAll(".cell")];
 
-  const marked = cells.map(
-    cell =>
-      cell.classList.contains("hit") ||
-      cell.classList.contains("free")
+function startGame() {
+
+  if (
+    selectedMembers.length !== 16
+  ) {
+    return;
+  }
+
+
+  selectScreen.classList.add(
+    "hidden"
   );
 
-  const lines = [
+  gameScreen.classList.remove(
+    "hidden"
+  );
 
-    // 横
-    [0,1,2,3,4],
-    [5,6,7,8,9],
-    [10,11,12,13,14],
-    [15,16,17,18,19],
-    [20,21,22,23,24],
 
-    // 縦
-    [0,5,10,15,20],
-    [1,6,11,16,21],
-    [2,7,12,17,22],
-    [3,8,13,18,23],
-    [4,9,14,19,24],
+  cardMembers =
+    shuffle(selectedMembers);
 
-    // 斜め
-    [0,6,12,18,24],
-    [4,8,12,16,20]
 
-  ];
+  drawnMembers = [];
 
-  const bingo =
-    lines.some(line =>
-      line.every(index => marked[index])
+
+  createBingoCard();
+
+}
+
+
+/* =====================================================
+   CREATE BINGO CARD
+===================================================== */
+
+function createBingoCard() {
+
+  bingoCard.innerHTML = "";
+
+
+  cardMembers.forEach(member => {
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "bingo-cell";
+
+    cell.dataset.name =
+      member.name;
+
+
+    cell.innerHTML = `
+      <img
+        src="${member.image}"
+        alt="${member.name}"
+        onerror="this.style.display='none';"
+      >
+
+      <div class="bingo-cell-name">
+        ${member.name}
+      </div>
+    `;
+
+
+    /*
+      抽選で出たあと、
+      自分でタップして開く
+    */
+
+    cell.addEventListener(
+      "click",
+      () => {
+
+        if (
+          cell.dataset.canOpen !== "true"
+        ) {
+          return;
+        }
+
+
+        cell.classList.add(
+          "opened"
+        );
+
+
+        cell.dataset.canOpen =
+          "false";
+
+
+        checkBingo();
+
+      }
     );
 
-  if (bingo) {
 
-    message.innerHTML =
-      '<div class="bingo">🎉 BINGO!! 🎉</div>';
+    bingoCard.appendChild(cell);
+
+  });
+
+}
+
+
+/* =====================================================
+   DRAW
+===================================================== */
+
+drawButton.addEventListener(
+  "click",
+  drawMember
+);
+
+
+function drawMember() {
+
+  if (drawTimer !== null) {
+    return;
+  }
+
+
+  const remaining =
+    members.filter(member =>
+      !drawnMembers.some(
+        drawn =>
+          drawn.name === member.name
+      )
+    );
+
+
+  if (remaining.length === 0) {
+
+    resultName.textContent =
+      "全員引きました！";
 
     drawButton.disabled = true;
 
+    return;
+
+  }
+
+
+  drawButton.disabled = true;
+
+
+  resultMessage.textContent = "";
+
+
+  /*
+    高速ルーレット
+  */
+
+  let count = 0;
+
+  const maxCount = 22;
+
+
+  drawTimer =
+    setInterval(() => {
+
+      const randomMember =
+        members[
+          Math.floor(
+            Math.random() *
+            members.length
+          )
+        ];
+
+
+      resultImage.src =
+        randomMember.image;
+
+      resultName.textContent =
+        randomMember.name;
+
+
+      count++;
+
+
+      if (
+        count >= maxCount
+      ) {
+
+        clearInterval(drawTimer);
+
+        drawTimer = null;
+
+
+        finishDraw(
+          remaining
+        );
+
+      }
+
+    }, 70);
+
+}
+
+
+/* =====================================================
+   FINISH DRAW
+===================================================== */
+
+function finishDraw(
+  remaining
+) {
+
+  const randomIndex =
+    Math.floor(
+      Math.random() *
+      remaining.length
+    );
+
+
+  const selected =
+    remaining[randomIndex];
+
+
+  drawnMembers.push(selected);
+
+
+  resultImage.src =
+    selected.image;
+
+  resultName.textContent =
+    selected.name;
+
+
+  const cardCell =
+    [...document.querySelectorAll(
+      ".bingo-cell"
+    )].find(
+      cell =>
+        cell.dataset.name ===
+        selected.name
+    );
+
+
+  if (cardCell) {
+
+    /*
+      カードにいる！
+      → 自分でタップできるようにする
+    */
+
+    cardCell.dataset.canOpen =
+      "true";
+
+
+    resultMessage.textContent =
+      "🩷 この人が出た！マスをタップして開けてね！";
+
+    resultMessage.className =
+      "result-message hit";
+
+  }
+
+  else {
+
+    resultMessage.textContent =
+      "💔 ハズレ！";
+
+    resultMessage.className =
+      "result-message miss";
+
+  }
+
+
+  if (
+    drawnMembers.length >=
+    members.length
+  ) {
+
+    drawButton.disabled =
+      true;
+
   } else {
 
-    message.textContent =
-      `現在 ${drawnMembers.length}人 引きました`;
+    drawButton.disabled =
+      false;
 
   }
 
 }
 
 
-/* =========================================================
-   RESET
-========================================================= */
+/* =====================================================
+   CHECK BINGO
+===================================================== */
 
-resetButton.addEventListener("click", resetGame);
+function checkBingo() {
+
+  const cells =
+    [...document.querySelectorAll(
+      ".bingo-cell"
+    )];
+
+
+  const opened =
+    cells.map(
+      cell =>
+        cell.classList.contains(
+          "opened"
+        )
+    );
+
+
+  const lines = [
+
+    /* 横 */
+
+    [0,1,2,3],
+
+    [4,5,6,7],
+
+    [8,9,10,11],
+
+    [12,13,14,15],
+
+
+    /* 縦 */
+
+    [0,4,8,12],
+
+    [1,5,9,13],
+
+    [2,6,10,14],
+
+    [3,7,11,15],
+
+
+    /* 斜め */
+
+    [0,5,10,15],
+
+    [3,6,9,12]
+
+  ];
+
+
+  const bingo =
+    lines.some(
+      line =>
+        line.every(
+          index =>
+            opened[index]
+        )
+    );
+
+
+  if (bingo) {
+
+    resultMessage.innerHTML =
+      "🎉 BINGO!! 🎉";
+
+    resultMessage.className =
+      "result-message bingo-message";
+
+    drawButton.disabled =
+      true;
+
+  }
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+resetButton.addEventListener(
+  "click",
+  resetGame
+);
+
 
 function resetGame() {
 
-  started = false;
+  if (drawTimer !== null) {
 
-  drawnMembers = [];
+    clearInterval(drawTimer);
+
+    drawTimer = null;
+
+  }
+
+
+  selectedMembers = [];
+
   cardMembers = [];
 
-  bingoCard.innerHTML = "";
+  drawnMembers = [];
 
-  currentImage.src = "";
-  currentName.textContent =
+
+  gameScreen.classList.add(
+    "hidden"
+  );
+
+  selectScreen.classList.remove(
+    "hidden"
+  );
+
+
+  resultImage.src = "";
+
+  resultName.textContent =
     "メンバーを引いてね♡";
 
-  message.textContent = "";
+  resultMessage.textContent =
+    "";
 
-  drawButton.disabled = false;
 
-  game.classList.add("hidden");
-  startButton.classList.remove("hidden");
+  createMemberList();
+
+  updateSelection();
 
 }
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+createMemberList();
+
+updateSelection();
 
 </script>
 
